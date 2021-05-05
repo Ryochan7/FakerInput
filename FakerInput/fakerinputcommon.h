@@ -86,4 +86,22 @@ typedef struct _FAKERINPUT_RELATIVE_MOUSE_REPORT
 
 } FakerInputRelativeMouseReport;
 
+
+typedef struct _FAKERINPUT_MOUSE_REPORT
+{
+
+    BYTE        ReportID;
+
+    BYTE        Button;
+
+    USHORT      XValue;
+
+    USHORT      YValue;
+
+    BYTE        WheelPosition;
+
+    BYTE        HWheelPosition;
+
+} FakerInputMouseReport;
+
 #endif // FAKERINPUTCOMMON_H
