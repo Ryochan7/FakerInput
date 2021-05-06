@@ -4,7 +4,7 @@
 #include <minwindef.h>
 
 #define REPORTID_KEYBOARD 0x02
-#define REPORTID_MOUSE          0x03
+#define REPORTID_MOUSE 0x03
 #define REPORTID_RELATIVE_MOUSE 0x04
 #define REPORTID_ENHANCED_KEY   0x08
 #define REPORTID_CONTROL  0x40
@@ -100,7 +100,7 @@ typedef struct _FAKERINPUT_MOUSE_REPORT
 
     BYTE        WheelPosition;
 
-    BYTE        HWheelPosition;
+    //BYTE        HWheelPosition;
 
 } FakerInputMouseReport;
 
