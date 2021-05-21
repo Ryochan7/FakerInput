@@ -48,7 +48,7 @@ typedef struct _FAKERINPUT_KEYBOARD_REPORT
 
     BYTE      Reserved;
 
-    // See http://www.usb.org/developers/devclass_docs/Hut1_11.pdf
+    // See https://www.usb.org/sites/default/files/hut1_22.pdf
     // for a list of key codes
     BYTE      KeyCodes[KBD_KEY_CODES];
 
@@ -58,9 +58,11 @@ typedef struct _FAKERINPUT_MULTIMEDIA_REPORT
 {
     BYTE        ReportID;
 
-    BYTE        MultimediaKeys;
+    BYTE        MultimediaKeys0;
 
-    BYTE        ExtraKeys;
+    BYTE        MultimediaKeys1;
+
+    BYTE        MultimediaKeys2;
 
 } FakerInputMultimediaReport;
 
