@@ -27,10 +27,10 @@ DEFINE_GUID (GUID_DEVINTERFACE_FakerInput,
 // {ab67b0fa-d0f5-4f60-81f4-346e18fd0805}
 
 #define MAXIMUM_STRING_LENGTH           (126 * sizeof(WCHAR))
-#define FAKERINPUT_MANUFACTURER_STRING    L"UMDF Virtual hidmini device Manufacturer string"  
-#define FAKERINPUT_PRODUCT_STRING         L"UMDF Virtual hidmini device Product string"  
-#define FAKERINPUT_SERIAL_NUMBER_STRING   L"UMDF Virtual hidmini device Serial Number string"  
-#define FAKERINPUT_DEVICE_STRING          L"UMDF Virtual hidmini device"  
+#define FAKERINPUT_MANUFACTURER_STRING    L"Ryochan7"  
+#define FAKERINPUT_PRODUCT_STRING         L"FakerInput Device"  
+#define FAKERINPUT_SERIAL_NUMBER_STRING   L"0.0.1"  
+#define FAKERINPUT_DEVICE_STRING          L"FakerInput Device"
 #define FAKERINPUT_DEVICE_STRING_INDEX    5
 
 #endif // PUBLIC_H
