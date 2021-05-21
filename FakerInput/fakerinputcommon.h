@@ -3,10 +3,12 @@
 
 #include <minwindef.h>
 
-#define REPORTID_KEYBOARD 0x02
-#define REPORTID_MOUSE 0x03
-#define REPORTID_RELATIVE_MOUSE 0x04
-#define REPORTID_ENHANCED_KEY   0x08
+// Report ID for the various virtual devices
+
+#define REPORTID_KEYBOARD 0x01
+#define REPORTID_ENHANCED_KEY   0x02
+#define REPORTID_RELATIVE_MOUSE 0x03
+#define REPORTID_ABSOLUTE_MOUSE 0x04
 #define REPORTID_CONTROL  0x40
 
 #define CONTROL_REPORT_SIZE 0x41
@@ -87,7 +89,7 @@ typedef struct _FAKERINPUT_RELATIVE_MOUSE_REPORT
 } FakerInputRelativeMouseReport;
 
 
-typedef struct _FAKERINPUT_MOUSE_REPORT
+typedef struct _FAKERINPUT_ABS_MOUSE_REPORT
 {
 
     BYTE        ReportID;
@@ -102,6 +104,6 @@ typedef struct _FAKERINPUT_MOUSE_REPORT
 
     //BYTE        HWheelPosition;
 
-} FakerInputMouseReport;
+} FakerInputAbsMouseReport;
 
 #endif // FAKERINPUTCOMMON_H

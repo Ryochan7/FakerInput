@@ -135,7 +135,7 @@ HID_REPORT_DESCRIPTOR       G_DefaultReportDescriptor[] = {
     0x05, 0x01,                         // USAGE_PAGE (Generic Desktop)
     0x09, 0x02,                         // USAGE (Mouse)
     0xa1, 0x01,                         // COLLECTION (Application)
-    0x85, REPORTID_MOUSE,               //   REPORT_ID (Mouse)
+    0x85, REPORTID_ABSOLUTE_MOUSE,               //   REPORT_ID (Mouse)
     0x09, 0x01,                         //   USAGE (Pointer)
     0xa1, 0x00,                         //   COLLECTION (Physical)
     0x05, 0x09,                         //     USAGE_PAGE (Button)
