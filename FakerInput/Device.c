@@ -73,7 +73,7 @@ HID_REPORT_DESCRIPTOR       G_DefaultReportDescriptor[] = {
         0x09, 0xe2,                         //   Usage (Mute)
         0x09, 0xea,                         //   Usage (Volume Decrement)
         0x09, 0xe9,                         //   Usage (Volume Increment)
-        0x0a, 0x23, 0x02,                   //   Usage (AC Home)
+        0x09, 0xb8,                         //   Usage (Eject)
         0x81, 0x02,                         //   Input (Data, Variable, Absolute)
         0x95, 0x08,                         //   Report Count (8)
         0x0a, 0x94, 0x01,                   //   Usage (AL Local Machine Browser)
