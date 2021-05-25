@@ -83,5 +83,6 @@ EXTERN_C_END
 #define FAKERINPUT_PID             0xFEED
 #define FAKERINPUT_VID             0xDEED
 #define FAKERINPUT_VERSION         0x0101
+#define FAKERINPUT_MIN_API_VERSION 0x01
 
 #endif // DEVICE_H

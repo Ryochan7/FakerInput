@@ -385,62 +385,107 @@ Return Value:
         return status;
     }
 
-    if (packet.reportId != REPORTID_CONTROL)
+    //TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "WHY ME %d", packet.reportId);
+
+    switch (packet.reportId)
     {
+    case REPORTID_CONTROL:
+        //
+        // before touching buffer make sure buffer is big enough.
+        //
+        reportSize = packet.reportBufferLen - sizeof(FakerInputControlReportHeader);
+        FakerInputControlReportHeader* pReport = (FakerInputControlReportHeader*)packet.reportBuffer;
+
+        if (pReport->ReportLength > reportSize)
+        {
+            status = STATUS_INVALID_BUFFER_SIZE;
+            KdPrint(("WriteReport: invalid input buffer. size %d, expect %d\n",
+                packet.reportBufferLen, reportSize));
+            return status;
+        }
+
+        //TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "REPORT %d INNER LEN %d FULL LEN %d 0 %d",
+        //    packet.reportId, pReport->ReportLength, packet.reportBufferLen, pReport->ReportID);
+
+        outputReport = (BYTE*)packet.reportBuffer + sizeof(FakerInputControlReportHeader);
+
+        PVOID pReadReport = NULL;
+
+        // Obtain a WDFREQUEST object from manual queue
+        status = WdfIoQueueRetrieveNextRequest(DeviceContext->ManualQueue,
+            &reqRead);
+
+        if (!NT_SUCCESS(status)) {
+            return status;
+        }
+
+        // Copy current report data to request in manual queue
+        status = WdfRequestRetrieveOutputBuffer(reqRead,
+            reportSize,
+            &pReadReport,
+            &bytesReturned);
+
+        RtlCopyMemory(pReadReport,
+            outputReport,
+            reportSize);
+
+        // Mark from manual queue as complete
+        WdfRequestCompleteWithInformation(reqRead,
+            status,
+            bytesReturned);
+
+        // set status and information for initial request
+        WdfRequestSetInformation(Request, reportSize);
+
+        break;
+    case REPORTID_METHOD:
+        //
+        // before touching buffer make sure buffer is big enough.
+        //
+
+        reportSize = packet.reportBufferLen - sizeof(FakerInputMethodReportHeader);
+        FakerInputMethodReportHeader* methodReport = (FakerInputMethodReportHeader*)packet.reportBuffer;
+        if (methodReport->ReportLength > reportSize)
+        {
+            status = STATUS_INVALID_BUFFER_SIZE;
+            KdPrint(("WriteReport: invalid input buffer. size %d, expect %d\n",
+                packet.reportBufferLen, reportSize));
+            return status;
+        }
+
+        // Split into separate function later. Might add more methods
+        switch (methodReport->MethodEndpointID)
+        {
+        case FAKERINPUT_CHECK_API_VERSION:
+            FakerInputAPIVersionReport* tempReport =
+                (FakerInputAPIVersionReport*)(packet.reportBuffer + sizeof(FakerInputMethodReportHeader));
+            if (tempReport->ApiVersion < FAKERINPUT_MIN_API_VERSION)
+            {
+                status = STATUS_UNSUCCESSFUL;
+                KdPrint(("WriteReport: invalid API Version. passed %d, expect %d\n",
+                    tempReport->ApiVersion, FAKERINPUT_MIN_API_VERSION));
+                return status;
+            }
+
+            status = STATUS_SUCCESS;
+            break;
+        default:
+            status = STATUS_INVALID_PARAMETER;
+            KdPrint(("WriteReport: unkown report id %d\n", packet.reportId));
+            break;
+        }
+
+        
+        break;
+
+    default:
         //
         // Return error for unknown collection
         //
         status = STATUS_INVALID_PARAMETER;
         KdPrint(("WriteReport: unkown report id %d\n", packet.reportId));
-        return status;
     }
 
-    //
-    // before touching buffer make sure buffer is big enough.
-    //
-    reportSize = packet.reportBufferLen - sizeof(FakerInputControlReportHeader);
-    FakerInputControlReportHeader* pReport = (FakerInputControlReportHeader*)packet.reportBuffer;
-
-    if (pReport->ReportLength > reportSize)
-    {
-        status = STATUS_INVALID_BUFFER_SIZE;
-        KdPrint(("WriteReport: invalid input buffer. size %d, expect %d\n",
-            packet.reportBufferLen, reportSize));
-        return status;
-    }
-
-    //TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "REPORT %d INNER LEN %d FULL LEN %d 0 %d",
-    //    packet.reportId, pReport->ReportLength, packet.reportBufferLen, pReport->ReportID);
-
-    outputReport = (BYTE*)packet.reportBuffer + sizeof(FakerInputControlReportHeader);
-
-    PVOID pReadReport = NULL;
-
-    // Obtain a WDFREQUEST object from manual queue
-    status = WdfIoQueueRetrieveNextRequest(DeviceContext->ManualQueue,
-        &reqRead);
-
-    if (!NT_SUCCESS(status)) {
-        return status;
-    }
-
-    // Copy current report data to request in manual queue
-    status = WdfRequestRetrieveOutputBuffer(reqRead,
-        reportSize,
-        &pReadReport,
-        &bytesReturned);
-
-    RtlCopyMemory(pReadReport,
-        outputReport,
-        reportSize);
-
-    // Mark from manual queue as complete
-    WdfRequestCompleteWithInformation(reqRead,
-        status,
-        bytesReturned);
-
-    // set status and information for initial request
-    WdfRequestSetInformation(Request, reportSize);
     return status;
 }
 
