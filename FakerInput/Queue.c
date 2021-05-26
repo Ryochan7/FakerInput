@@ -190,6 +190,10 @@ Return Value:
         status = WriteReport(deviceContext, Request);
         break;
 
+    case IOCTL_UMDF_HID_GET_FEATURE:
+        status = GetFeatureReport(deviceContext, Request);
+        break;
+
     case IOCTL_HID_GET_STRING:                      // METHOD_NEITHER
         status = GetString(Request);
         break;
@@ -484,6 +488,53 @@ Return Value:
         //
         status = STATUS_INVALID_PARAMETER;
         KdPrint(("WriteReport: unkown report id %d\n", packet.reportId));
+    }
+
+    return status;
+}
+
+NTSTATUS
+GetFeatureReport(
+    _In_  PDEVICE_CONTEXT DeviceContext,
+    _In_  WDFREQUEST Request
+)
+{
+    NTSTATUS status;
+    HID_XFER_PACKET packet;
+    ULONG reportSize;
+
+    UNREFERENCED_PARAMETER(DeviceContext);
+
+    status = RequestGetHidXferPacket_ToReadFromDevice(
+        Request,
+        &packet);
+
+    if (!NT_SUCCESS(status)) {
+        return status;
+    }
+
+    /*TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "FEATURE ID: %d %d",
+        packet.reportId,
+        packet.reportBufferLen);
+     */
+
+    switch (packet.reportId)
+    {
+    case REPORTID_API_VERSION_FEATURE_ID:
+        //TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "IN FEATURE REPORT METHOD");
+        reportSize = sizeof(FakerInputAPIVersionFeature) + sizeof(packet.reportId);
+        FakerInputAPIVersionFeature* tempFeatureReport = (FakerInputAPIVersionFeature*)(packet.reportBuffer + sizeof(packet.reportId));
+        packet.reportBuffer[0] = REPORTID_API_VERSION_FEATURE_ID;
+        tempFeatureReport->ApiVersion = FAKERINPUT_API_VERSION;
+
+        //
+        // Report how many bytes were copied
+        //
+        WdfRequestSetInformation(Request, reportSize);
+        break;
+    default:
+        status = STATUS_INVALID_PARAMETER;
+        break;
     }
 
     return status;

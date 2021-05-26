@@ -58,6 +58,12 @@ WriteReport(
 );
 
 NTSTATUS
+GetFeatureReport(
+    _In_  PDEVICE_CONTEXT DeviceContext,
+    _In_  WDFREQUEST Request
+);
+
+NTSTATUS
 GetString(
     _In_  WDFREQUEST        Request
 );

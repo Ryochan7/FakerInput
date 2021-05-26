@@ -18,6 +18,9 @@
 #define FAKERINPUT_CHECK_API_VERSION 0x01
 #define FAKERINPUT_CHECK_API_VERSION_BUFFER_SIZE 2
 
+#define REPORTID_API_VERSION_FEATURE_ID 0x42
+
+
 typedef struct _FAKERINPUT_CONTROL_REPORT_HEADER
 {
 
@@ -132,5 +135,17 @@ typedef struct _FAKERINPUT_API_VERSION_REPORT
     UINT32 ApiVersion;
 
 } FakerInputAPIVersionReport;
+
+typedef struct _FAKERINPUT_FEATURE_REPORT_HEADER
+{
+    BYTE ReportId;
+
+} FakerInputFeatureReportHeader;
+
+typedef struct _FAKERINPUT_API_VERSION_FEATURE
+{
+    UINT32 ApiVersion;
+
+} FakerInputAPIVersionFeature;
 
 #endif // FAKERINPUTCOMMON_H
