@@ -144,7 +144,8 @@ Return Value:
     /*TraceEvents(TRACE_LEVEL_INFORMATION, 
                 TRACE_QUEUE, 
                 "%!FUNC! Queue 0x%p, Request 0x%p OutputBufferLength %d InputBufferLength %d IoControlCode %d", 
-                Queue, Request, (int) OutputBufferLength, (int) InputBufferLength, IoControlCode);*/
+                Queue, Request, (int) OutputBufferLength, (int) InputBufferLength, IoControlCode);
+    */
 
     switch (IoControlCode)
     {
@@ -442,44 +443,18 @@ Return Value:
         WdfRequestSetInformation(Request, reportSize);
 
         break;
-    case REPORTID_METHOD:
-        //
-        // before touching buffer make sure buffer is big enough.
-        //
-
-        reportSize = packet.reportBufferLen - sizeof(FakerInputMethodReportHeader);
-        FakerInputMethodReportHeader* methodReport = (FakerInputMethodReportHeader*)packet.reportBuffer;
-        if (methodReport->ReportLength > reportSize)
+    case REPORTID_CHECK_API_VERSION:
+        FakerInputAPIVersionReport* tempReport =
+            (FakerInputAPIVersionReport*)(packet.reportBuffer);
+        if (tempReport->ApiVersion < FAKERINPUT_MIN_API_VERSION)
         {
-            status = STATUS_INVALID_BUFFER_SIZE;
-            KdPrint(("WriteReport: invalid input buffer. size %d, expect %d\n",
-                packet.reportBufferLen, reportSize));
+            status = STATUS_UNSUCCESSFUL;
+            KdPrint(("WriteReport: invalid API Version. passed %d, expect %d\n",
+                tempReport->ApiVersion, FAKERINPUT_MIN_API_VERSION));
             return status;
         }
 
-        // Split into separate function later. Might add more methods
-        switch (methodReport->MethodEndpointID)
-        {
-        case FAKERINPUT_CHECK_API_VERSION:
-            FakerInputAPIVersionReport* tempReport =
-                (FakerInputAPIVersionReport*)(packet.reportBuffer + sizeof(FakerInputMethodReportHeader));
-            if (tempReport->ApiVersion < FAKERINPUT_MIN_API_VERSION)
-            {
-                status = STATUS_UNSUCCESSFUL;
-                KdPrint(("WriteReport: invalid API Version. passed %d, expect %d\n",
-                    tempReport->ApiVersion, FAKERINPUT_MIN_API_VERSION));
-                return status;
-            }
-
-            status = STATUS_SUCCESS;
-            break;
-        default:
-            status = STATUS_INVALID_PARAMETER;
-            KdPrint(("WriteReport: unkown report id %d\n", packet.reportId));
-            break;
-        }
-
-        
+        status = STATUS_SUCCESS;
         break;
 
     default:
@@ -522,8 +497,8 @@ GetFeatureReport(
     {
     case REPORTID_API_VERSION_FEATURE_ID:
         //TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "IN FEATURE REPORT METHOD");
-        reportSize = sizeof(FakerInputAPIVersionFeature) + sizeof(packet.reportId);
-        FakerInputAPIVersionFeature* tempFeatureReport = (FakerInputAPIVersionFeature*)(packet.reportBuffer + sizeof(packet.reportId));
+        reportSize = sizeof(FakerInputAPIVersionFeature);
+        FakerInputAPIVersionFeature* tempFeatureReport = (FakerInputAPIVersionFeature*)(packet.reportBuffer);
         packet.reportBuffer[0] = REPORTID_API_VERSION_FEATURE_ID;
         tempFeatureReport->ApiVersion = FAKERINPUT_API_VERSION;
 

@@ -206,17 +206,14 @@ HID_REPORT_DESCRIPTOR       G_DefaultReportDescriptor[] = {
         0x06, 0x00, 0xff,                         // USAGE_PAGE (Vendor Defined Page 1)
         0x09, 0x02,                               // USAGE (Vendor Usage 2)
         0xa1, 0x01,                               // COLLECTION (Application)
-        0x85, REPORTID_METHOD,                    //   REPORT_ID (65)  
+        0x85, REPORTID_CHECK_API_VERSION,         //   REPORT_ID (65)
         0x15, 0x00,                               //   LOGICAL_MINIMUM (0)
         0x26, 0xff, 0x00,                         //   LOGICAL_MAXIMUM (255)
         0x75, 0x08,                               //   REPORT_SIZE  (8)   - bits
         0x95, 0x40,                               //   REPORT_COUNT (64)  - Bytes
         0x09, 0x02,                               //   USAGE (Vendor Usage 1)
-        0x81, 0x02,                               //   INPUT (Data,Var,Abs)
-        0x85, REPORTID_API_VERSION_FEATURE_ID,    //   REPORT_ID (66)
-        0x15, 0x00,                               //   LOGICAL_MINIMUM (0)
-        0x26, 0xff, 0x00,                         //   LOGICAL_MAXIMUM (255)
-        0x75, 0x08,                               //   REPORT_SIZE  (8)   - bits
+        0x91, 0x02,                               //   OUTPUT (Data,Var,Abs)
+        0x85, REPORTID_API_VERSION_FEATURE_ID,    //   REPORT_ID (65)
         0x95, 0x40,                               //   REPORT_COUNT (64)  - Bytes
         0x09, 0x02,                               //   USAGE (Vendor Usage 1)
         0xb1, 0x02,                               //   FEATURE (Data,Var,Abs)

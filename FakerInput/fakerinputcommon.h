@@ -10,7 +10,7 @@
 #define REPORTID_RELATIVE_MOUSE 0x03
 #define REPORTID_ABSOLUTE_MOUSE 0x04
 #define REPORTID_CONTROL  0x40
-#define REPORTID_METHOD   0x41
+#define REPORTID_CHECK_API_VERSION   0x41
 
 #define CONTROL_REPORT_SIZE 0x41
 
@@ -30,16 +30,6 @@ typedef struct _FAKERINPUT_CONTROL_REPORT_HEADER
 
 } FakerInputControlReportHeader;
 
-
-typedef struct _FAKERINPUT_METHOD_REPORT_HEADER
-{
-    BYTE ReportID;
-
-    BYTE MethodEndpointID;
-
-    BYTE ReportLength;
-
-} FakerInputMethodReportHeader;
 
 //
 // Keyboard specific report infomation
@@ -136,16 +126,14 @@ typedef struct _FAKERINPUT_API_VERSION_REPORT
 
 } FakerInputAPIVersionReport;
 
-typedef struct _FAKERINPUT_FEATURE_REPORT_HEADER
-{
-    BYTE ReportId;
-
-} FakerInputFeatureReportHeader;
 
 typedef struct _FAKERINPUT_API_VERSION_FEATURE
 {
+    BYTE ReportId;
+
     UINT32 ApiVersion;
 
 } FakerInputAPIVersionFeature;
+
 
 #endif // FAKERINPUTCOMMON_H
