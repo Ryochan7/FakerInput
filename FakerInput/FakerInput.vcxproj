@@ -47,7 +47,7 @@
     <Configuration>Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">Win32</Platform>
     <RootNamespace>FakerInput</RootNamespace>
-    <Version>0.0.0.2</Version>
+    <Version>0.1.0</Version>
   </PropertyGroup>
   <PropertyGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PlatformToolset>WindowsUserModeDriver10.0</PlatformToolset>
