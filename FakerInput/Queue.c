@@ -444,6 +444,7 @@ Return Value:
 
         break;
     case REPORTID_CHECK_API_VERSION:
+    {
         FakerInputAPIVersionReport* tempReport =
             (FakerInputAPIVersionReport*)(packet.reportBuffer);
         if (tempReport->ApiVersion < FAKERINPUT_MIN_API_VERSION)
@@ -456,6 +457,7 @@ Return Value:
 
         status = STATUS_SUCCESS;
         break;
+    }
 
     default:
         //
