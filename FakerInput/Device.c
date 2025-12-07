@@ -213,7 +213,7 @@ HID_REPORT_DESCRIPTOR       G_DefaultReportDescriptor[] = {
         0x95, 0x40,                               //   REPORT_COUNT (64)  - Bytes
         0x09, 0x02,                               //   USAGE (Vendor Usage 1)
         0x91, 0x02,                               //   OUTPUT (Data,Var,Abs)
-        0x85, REPORTID_API_VERSION_FEATURE_ID,    //   REPORT_ID (1)
+        0x85, REPORTID_API_VERSION_FEATURE_ID,    //   REPORT_ID (66)
         0x95, 0x40,                               //   REPORT_COUNT (64)  - Bytes
         0x09, 0x02,                               //   USAGE (Vendor Usage 1)
         0xb1, 0x02,                               //   FEATURE (Data,Var,Abs)
