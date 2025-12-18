@@ -7,4 +7,4 @@
 * Update project to build on Visual Studio 2026
 * ~~Check if feature report API check works. Thought it was tested before but I cannot remember~~
 * Release new version with tweaked build options
-* Expose driver version number from driver control device
+* ~~Expose driver version number from driver control device~~
