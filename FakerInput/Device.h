@@ -82,7 +82,10 @@ EXTERN_C_END
 //
 #define FAKERINPUT_VID             0xFE0F
 #define FAKERINPUT_PID             0x00FF
-#define FAKERINPUT_VERSION         0x0001
+// Increment with each release
+#define FAKERINPUT_VERSION         0x0002
+// Used by clients to detect whether the library should work.
+// Not sure this will really get used
 #define FAKERINPUT_MIN_API_VERSION 0x01
 
 #endif // DEVICE_H
